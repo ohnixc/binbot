@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, request, current_app as app
 from main.auth import token_required
-from main.orders.models import Buy_Order, Sell_Order, Orders
+from main.orders.models import Buy_Order, Sell_Order, Orders, OrderUpdates
 from flask_cors import CORS, cross_origin
 
 
@@ -17,12 +17,6 @@ def get():
     # Get all orders from Binance? Might be too expensive
         # return Buy_Order(symbol, quantity, type, price).get_balances()
     pass
-
-# @order_blueprint.route("/<id>", methods=["GET"])
-# def get_one(id):
-#   # Get single order (id = orderId) from Binance
-# 	return order().get_one()
-
 
 @order_blueprint.route("/buy", methods=["POST"])
 def create_buy_order():
@@ -41,11 +35,9 @@ def get_open_orders():
 def delete_order():
     return Orders().delete_order()
 
+@order_blueprint.route("/order-updates", methods=["GET"])
+def order_updates():
+    order = OrderUpdates()
+    return order.listen_orders()
 
-# @order_blueprint.route("/", methods=["PUT"])
-# def edit():
-# 	return order().edit()
 
-# @order_blueprint.route("/<id>", methods=["DELETE"])
-# def delete(id):
-# 	return order().delete(id)
